@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#  A bash script that prints "Best School" 10 times using a while loop
+
+#  Initialize counter
+counter=0
+#  Loop while counter is less than 10
+while [ $counter -lt 10 ]; do
+	echo "Best School"
+
+#  Increment counter
+	((counter++))
+done
