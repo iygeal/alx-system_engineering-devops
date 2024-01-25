@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 #  Bash script that prints string using while loop and if statement
 
 counter=1
