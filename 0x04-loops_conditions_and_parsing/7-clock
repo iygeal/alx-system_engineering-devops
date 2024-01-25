@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #  Bash script that prints time for 12 hours 59 minutes
 hours=0
-while [ $hours -le 11 ]; do
+while [ $hours -le 12 ]; do
 	echo "Hour: $hours"
 
 	minutes=1
