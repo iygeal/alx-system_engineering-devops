@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Bash script to provide information about a file named school
 
 # Define the file name
