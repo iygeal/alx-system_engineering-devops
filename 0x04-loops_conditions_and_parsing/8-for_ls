@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Bash script to display content of the current directory
+# in a list format, showing only the part of the name after the first dash
+
+# Iterate over files in the current directory
+for file in *; do
+  # Check if the file is not a hidden file
+  if [[ $file != .* ]]; then
+    # Extract the part of the name after the first dash
+    part_after_dash=$(echo "$file" | cut -d'-' -f2-)
+
+    # Display the modified file name
+    echo "$part_after_dash"
+  fi
+done
