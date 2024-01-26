@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#  Script that displays the word "bash" to find PID of Bash
+#  shellcheck disable=SC2009
+#  The SC2009 warning is disabled to allow the use of ps with grep in this context
+ps aux | grep bash
