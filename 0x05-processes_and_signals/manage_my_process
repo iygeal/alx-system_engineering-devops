@@ -18,8 +18,6 @@ stop_process() {
 		kill "$pid"
 		rm -f "PID_FILE"
 		echo "manage_my_process stopped"
-	else
-		echo "No running process found."
 	fi
 }
 #  Function to restart manage_my_process
