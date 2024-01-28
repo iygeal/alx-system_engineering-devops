@@ -9,7 +9,7 @@ if [ "${1}" == "start" ]; then
     # Start manage_my_process in the background
     ./manage_my_process &
 
-    # Create an empty PID file if it doesn't exist
+    # Create an empty PID file
     touch "$PID_FILE"
 
     # Capture the PID and store it in the PID_FILE
@@ -18,26 +18,22 @@ if [ "${1}" == "start" ]; then
 elif [ "${1}" == "stop" ]; then
     echo "manage_my_process stopped"
 
-    # Check if PID_FILE exists and kill the process
-    if [ -f "$PID_FILE" ]; then
-        pid=$(cat "$PID_FILE")
-        [ -n "$pid" ] && kill "$pid"
-        rm -f "$PID_FILE"
-    fi
+    # Kill the process without checking PID_FILE existence
+    pid=$(cat "$PID_FILE")
+    [ -n "$pid" ] && kill "$pid"
+    rm -f "$PID_FILE"
 elif [ "${1}" == "restart" ]; then
     echo "manage_my_process restarted"
 
-    # Check if PID_FILE exists and kill the process
-    if [ -f "$PID_FILE" ]; then
-        pid=$(cat "$PID_FILE")
-        [ -n "$pid" ] && kill "$pid"
-        rm -f "$PID_FILE"
-    fi
+    # Kill the process without checking PID_FILE existence
+    pid=$(cat "$PID_FILE")
+    [ -n "$pid" ] && kill "$pid"
+    rm -f "$PID_FILE"
 
     # Start manage_my_process in the background
     ./manage_my_process &
 
-    # Create an empty PID file if it doesn't exist
+    # Create an empty PID file
     touch "$PID_FILE"
 
     # Capture the PID and store it in the PID_FILE
