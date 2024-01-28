@@ -23,12 +23,9 @@ elif [ "${1}" == "stop" ]; then
     [ -n "$pid" ] && kill "$pid"
     rm -f "$PID_FILE"
 elif [ "${1}" == "restart" ]; then
-    echo "manage_my_process restarted"
-
     # Kill the process without checking PID_FILE existence
     pid=$(cat "$PID_FILE")
-    [ -n "$pid" ] && kill "$pid"
-    rm -f "$PID_FILE"
+    [ -n "$pid" ] && kill "$pid" && rm -f "$PID_FILE"
 
     # Start manage_my_process in the background
     ./manage_my_process &
@@ -38,6 +35,8 @@ elif [ "${1}" == "restart" ]; then
 
     # Capture the PID and store it in the PID_FILE
     echo "$!" > "$PID_FILE"
+
+    echo "manage_my_process restarted"
 else
     echo "Usage: 101-manage_my_process {start|stop|restart}"
 fi
