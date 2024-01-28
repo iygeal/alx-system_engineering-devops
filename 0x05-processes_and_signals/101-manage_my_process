@@ -6,25 +6,17 @@ PID_FILE="/var/run/my_process.pid"
 
 # Check for the argument and call the appropriate logic
 if [ "${1}" == "start" ]; then
-    if [ -f "$PID_FILE" ]; then
-        echo "manage_my_process is already running. Use 'restart' to restart."
-    else
-        "$MANAGE_SCRIPT" start & echo $! > "$PID_FILE" && echo "manage_my_process started"
-    fi
+    ./manage_my_process &
+    echo "$!" > "$PID_FILE"
+    echo "manage_my_process started"
 elif [ "${1}" == "stop" ]; then
-    if [ -f "$PID_FILE" ]; then
-        pid=$(cat "$PID_FILE")
-        kill "$pid" && rm -f "$PID_FILE" && echo "manage_my_process stopped"
-    else
-        echo "No running process found."
-    fi
+    echo "manage_my_process stopped"
+    [ -f "$PID_FILE" ] && { kill "$(cat "$PID_FILE")" && rm -f "$PID_FILE"; }
 elif [ "${1}" == "restart" ]; then
-    if [ -f "$PID_FILE" ]; then
-        pid=$(cat "$PID_FILE")
-        kill "$pid" && rm -f "$PID_FILE" && "$MANAGE_SCRIPT" start & echo $! > "$PID_FILE" && echo "manage_my_process restarted"
-    else
-        "$MANAGE_SCRIPT" start & echo $! > "$PID_FILE" && echo "manage_my_process restarted"
-    fi
+    [ -f "$PID_FILE" ] && { kill "$(cat "$PID_FILE")" && rm -f "$PID_FILE"; }
+    ./manage_my_process &
+    echo "$!" > "$PID_FILE"
+    echo "manage_my_process restarted"
 else
     echo "Usage: 101-manage_my_process {start|stop|restart}"
 fi
