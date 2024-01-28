@@ -1,42 +1,9 @@
 #!/usr/bin/env bash
-# manage_my_process Bash script
+#  This script indefinitely writes "I am alive" to the file /tmp/my_process
+#  It sleeps for two seconds in between each message.
 
-LOG_FILE="/tmp/my_process"
-SLEEP_INTERVAL=2
-
-# Function to start manage_my_process
-start_process() {
-    while true; do
-        echo "I am alive!" >> "$LOG_FILE"
-        sleep $SLEEP_INTERVAL
-    done
-}
-
-# Function to stop manage_my_process
-stop_process() {
-    pkill -f "manage_my_process"
-}
-
-# Check for the argument and call the appropriate function
-case "$1" in
-    start)
-        start_process &
-        echo $! > /var/run/my_process.pid
-        echo "manage_my_process started"
-        ;;
-    stop)
-        stop_process
-        rm -f /var/run/my_process.pid
-        echo "manage_my_process stopped"
-        ;;
-    restart)
-        stop_process
-        rm -f /var/run/my_process.pid
-        start_process &
-        echo $! > /var/run/my_process.pid
-        echo "manage_my_process restarted"
-        ;;
-    *)
-        echo "Usage: manage_my_process {start|stop|restart}"
-        ;;
-esac
+while true
+do
+  echo "I am alive!" >> /tmp/my_process
+  sleep 2
+done
