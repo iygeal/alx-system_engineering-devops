@@ -18,11 +18,11 @@ elif [ "${1}" == "stop" ]; then
     # Kill the process without checking PID file existence
     pid=$(cat /var/run/my_process.pid)
     [ -n "$pid" ] && kill "$pid"
-    rm -f /var/run/my_process.pid
+    rm /var/run/my_process.pid
 elif [ "${1}" == "restart" ]; then
     # Kill the process without checking PID file existence
     pid=$(cat /var/run/my_process.pid)
-    [ -n "$pid" ] && kill "$pid" && rm -f /var/run/my_process.pid
+    [ -n "$pid" ] && kill "$pid" && rm /var/run/my_process.pid
 
     # Start manage_my_process in the background
     ./manage_my_process &
