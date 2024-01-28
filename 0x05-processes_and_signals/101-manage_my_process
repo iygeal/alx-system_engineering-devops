@@ -8,7 +8,6 @@ PID_FILE="/var/run/my_process.pid"
 if [ "${1}" == "start" ]; then
     # Start manage_my_process in the background
     ./manage_my_process &
-	touch /var/run/my_process.pid
 
     # Capture the PID and store it in the PID_FILE
     echo "$!" > "$PID_FILE"
@@ -16,26 +15,23 @@ if [ "${1}" == "start" ]; then
 elif [ "${1}" == "stop" ]; then
     echo "manage_my_process stopped"
 
-    # Check if PID_FILE exists and kill the process
-    if [ -f "$PID_FILE" ]; then
-        pid=$(cat "$PID_FILE")
-        kill "$pid"
-        rm -f "$PID_FILE"
-    fi
+    # Kill the process using the PID_FILE and remove it
+    pid=$(cat "$PID_FILE" 2>/dev/null)
+    [ -n "$pid" ] && kill "$pid"
+    [ -f "$PID_FILE" ] && rm -f "$PID_FILE"
 elif [ "${1}" == "restart" ]; then
-    # Check if PID_FILE exists and kill the process
-    if [ -f "$PID_FILE" ]; then
-        pid=$(cat "$PID_FILE")
-        kill "$pid"
-        rm -f "$PID_FILE"
-    fi
+    echo "manage_my_process restarted"
+
+    # Kill the process using the PID_FILE and remove it
+    pid=$(cat "$PID_FILE" 2>/dev/null)
+    [ -n "$pid" ] && kill "$pid"
+    [ -f "$PID_FILE" ] && rm -f "$PID_FILE"
 
     # Start manage_my_process in the background
     ./manage_my_process &
 
     # Capture the PID and store it in the PID_FILE
     echo "$!" > "$PID_FILE"
-    echo "manage_my_process restarted"
 else
     echo "Usage: 101-manage_my_process {start|stop|restart}"
 fi
