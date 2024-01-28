@@ -13,7 +13,7 @@ start_process() {
 
 #  Function to stop manage_my_process
 stop_process() {
-	if [ -f "$PID_FILE" ]; then
+	if [ -f '$PID_FILE' ]; then
 		pid=$(cat "PID_FILE")
 		kill "$pid"
 		rm -f "PID_FILE"
