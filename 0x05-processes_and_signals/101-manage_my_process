@@ -1,40 +1,37 @@
 #!/usr/bin/env bash
 # Bash (init) script 101-manage_my_process
 
-# Hardcoded PID_FILE
-PID_FILE="/var/run/my_process.pid"
-
 # Check for the argument and call the appropriate logic
 if [ "${1}" == "start" ]; then
     # Start manage_my_process in the background
     ./manage_my_process &
 
     # Create an empty PID file
-    touch "$PID_FILE"
+    touch /var/run/my_process.pid
 
-    # Capture the PID and store it in the PID_FILE
-    echo "$!" > "$PID_FILE"
+    # Capture the PID and store it in the PID file
+    echo "$!" > /var/run/my_process.pid
     echo "manage_my_process started"
 elif [ "${1}" == "stop" ]; then
     echo "manage_my_process stopped"
 
-    # Kill the process without checking PID_FILE existence
-    pid=$(cat "$PID_FILE")
+    # Kill the process without checking PID file existence
+    pid=$(cat /var/run/my_process.pid)
     [ -n "$pid" ] && kill "$pid"
-    rm -f "$PID_FILE"
+    rm -f /var/run/my_process.pid
 elif [ "${1}" == "restart" ]; then
-    # Kill the process without checking PID_FILE existence
-    pid=$(cat "$PID_FILE")
-    [ -n "$pid" ] && kill "$pid" && rm -f "$PID_FILE"
+    # Kill the process without checking PID file existence
+    pid=$(cat /var/run/my_process.pid)
+    [ -n "$pid" ] && kill "$pid" && rm -f /var/run/my_process.pid
 
     # Start manage_my_process in the background
     ./manage_my_process &
 
     # Create an empty PID file
-    touch "$PID_FILE"
+    touch /var/run/my_process.pid
 
-    # Capture the PID and store it in the PID_FILE
-    echo "$!" > "$PID_FILE"
+    # Capture the PID and store it in the PID file
+    echo "$!" > /var/run/my_process.pid
 
     echo "manage_my_process restarted"
 else
