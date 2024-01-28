@@ -6,19 +6,29 @@ PID_FILE="/var/run/my_process.pid"
 
 # Function to start manage_my_process
 start_process() {
-    [ -f "$PID_FILE" ] && { echo "Error: manage_my_process is already running. Use 'restart' to restart."; exit 1; }
-    "$MANAGE_SCRIPT" start & echo $! > "$PID_FILE" && echo "manage_my_process started"
+    if [ -f "$PID_FILE" ]; then
+        echo "Error: manage_my_process is already running. Use 'restart' to restart."
+        exit 1
+    else
+        "$MANAGE_SCRIPT" start & echo $! > "$PID_FILE" && echo "manage_my_process started"
+    fi
 }
 
 # Function to stop manage_my_process
 stop_process() {
-    [ -f "$PID_FILE" ] && { kill "$(cat "$PID_FILE")" && rm -f "$PID_FILE" && echo "manage_my_process stopped"; } || echo "No running process found."
+    if [ -f "$PID_FILE" ]; then
+        pid=$(cat "$PID_FILE")
+        kill "$pid" && rm -f "$PID_FILE" && echo "manage_my_process stopped"
+    else
+        echo "No running process found."
+    fi
 }
 
 # Function to restart manage_my_process
 restart_process() {
     stop_process
     start_process
+    echo "manage_my_process restarted"
 }
 
 # Check for the argument and call the appropriate function
