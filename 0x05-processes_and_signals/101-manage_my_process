@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#  Bash (init) script to manage processes
+
+#  Check for the argument and call the manage_my_process script
+case "$1" in
+	start|stop|restart)
+		sudo ./manage_my_process "$1"
+		;;
+	*)
+		echo "Usage: 101-manage_my_process {start|stop|restart}"
+		;;
+esac
