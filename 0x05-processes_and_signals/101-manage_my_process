@@ -13,16 +13,23 @@ if [ "${1}" == "start" ]; then
     echo "$!" > /var/run/my_process.pid
     echo "manage_my_process started"
 elif [ "${1}" == "stop" ]; then
+    # Display message
     echo "manage_my_process stopped"
 
-    # Kill the process without checking PID file existence
-    pid=$(cat /var/run/my_process.pid)
-    [ -n "$pid" ] && kill "$pid"
-    rm /var/run/my_process.pid
+    # Kill the process using the PID from PID file (if exists)
+    kill "$(cat /var/run/my_process.pid)"
+
+    # Remove PID file (if exists)
+    rm -f /var/run/my_process.pid
 elif [ "${1}" == "restart" ]; then
-    # Kill the process without checking PID file existence
-    pid=$(cat /var/run/my_process.pid)
-    [ -n "$pid" ] && kill "$pid" && rm /var/run/my_process.pid
+    # Display message
+    echo "manage_my_process restarted"
+
+    # Kill the process using the PID from PID file (if exists)
+    kill "$(cat /var/run/my_process.pid)"
+
+    # Remove PID file (if exists)
+    rm -f /var/run/my_process.pid
 
     # Start manage_my_process in the background
     ./manage_my_process &
@@ -32,8 +39,7 @@ elif [ "${1}" == "restart" ]; then
 
     # Capture the PID and store it in the PID file
     echo "$!" > /var/run/my_process.pid
-
-    echo "manage_my_process restarted"
 else
-    echo "Usage: 101-manage_my_process {start|stop|restart}"
+    # Display usage message
+    echo "Usage: manage_my_process {start|stop|restart}"
 fi
