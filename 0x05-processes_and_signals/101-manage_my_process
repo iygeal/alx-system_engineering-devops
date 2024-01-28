@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Bash (init) script 101-manage_my_process
 
-MANAGE_SCRIPT="./manage_my_process"
 PID_FILE="/var/run/my_process.pid"
 
 # Check for the argument and call the appropriate logic
