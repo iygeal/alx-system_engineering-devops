@@ -1,43 +1,42 @@
 #!/usr/bin/env bash
-#  manage_my_process Bash script
+# manage_my_process Bash script
 
-PID_FILE="/var/run/my_process.pid"
 LOG_FILE="/tmp/my_process"
+SLEEP_INTERVAL=2
 
 # Function to start manage_my_process
 start_process() {
-	nohup ./manage_my_process >> "$LOG_FILE" 2>&1 &
-	echo "$!" > "$PID_FILE"
-	echo "manage_my_process started"
+    while true; do
+        echo "I am alive!" >> "$LOG_FILE"
+        sleep $SLEEP_INTERVAL
+    done
 }
 
-#  Function to stop manage_my_process
+# Function to stop manage_my_process
 stop_process() {
-	if [ -f '$PID_FILE' ]; then
-		pid=$(cat "PID_FILE")
-		kill "$pid"
-		rm -f "PID_FILE"
-		echo "manage_my_process stopped"
-	fi
+    pkill -f "manage_my_process"
 }
-#  Function to restart manage_my_process
-restart_process() {
-	stop_process
-	start_process
-	echo "manage_my_process restarted"
-}
-#  Check for the argument and call the appropriate function
+
+# Check for the argument and call the appropriate function
 case "$1" in
-	start)
-		start_process
-		;;
-	stop)
-		stop_process
-		;;
-	restart)
-		restart_process
-		;;
-	*)
-		echo "Usage: manage_my_process {start|stop|restart}"
-		;;
+    start)
+        start_process &
+        echo $! > /var/run/my_process.pid
+        echo "manage_my_process started"
+        ;;
+    stop)
+        stop_process
+        rm -f /var/run/my_process.pid
+        echo "manage_my_process stopped"
+        ;;
+    restart)
+        stop_process
+        rm -f /var/run/my_process.pid
+        start_process &
+        echo $! > /var/run/my_process.pid
+        echo "manage_my_process restarted"
+        ;;
+    *)
+        echo "Usage: manage_my_process {start|stop|restart}"
+        ;;
 esac
