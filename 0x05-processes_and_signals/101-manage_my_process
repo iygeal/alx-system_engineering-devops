@@ -8,6 +8,7 @@ PID_FILE="/var/run/my_process.pid"
 if [ "${1}" == "start" ]; then
     # Start manage_my_process in the background
     ./manage_my_process &
+	touch /var/run/my_process.pid
 
     # Capture the PID and store it in the PID_FILE
     echo "$!" > "$PID_FILE"
