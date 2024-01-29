@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#  Bash script that reads from /etc/passwd file
+#  Prints only the 1st, 3rd and 6th fields
+
+while IFS= read -r currentline; do
+	echo "$currentline" | cut -d: -f 1,3,6
+done < "/etc/passwd"
