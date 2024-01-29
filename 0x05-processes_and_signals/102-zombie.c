@@ -37,7 +37,7 @@ int main(void)
 		/* Create a new process */
 		child_pid = fork();
 
-		/* If we're in the child process */
+		/* If we're in the child process (because fork() returns 0 in child)*/
 		if (child_pid == 0)
 		{
 			/* Print the PID of the child (zombie) process */
