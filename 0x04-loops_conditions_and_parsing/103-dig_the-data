@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#  Bash script to group visitors by IP and HTTP status code
+#+ from the Apache log file using awk and sort
+
+# Path to the Apache log file
+apache_log_file="apache-access.log"
+
+# Check if the file exists
+if [ -e "$apache_log_file" ]; then
+  # Use awk to extract and format IP and HTTP status code,
+  #+ and then use sort to count occurrences
+  awk '{print $1 " " $9}' "$apache_log_file" | sort | uniq -c | sort -nr
+else
+  echo "Error: $apache_log_file does not exist."
+fi
