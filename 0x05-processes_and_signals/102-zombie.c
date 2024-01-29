@@ -51,4 +51,5 @@ int main(void)
 	 * to keep the parent process alive
 	 */
 	infinite_while();
+	return (0);
 }
