@@ -21,7 +21,7 @@ DNS Server (External): Resolves domain names to IP addresses (not shown explicit
 Issues:
 ---
 
-Single Point of Failure (SPOF): The server is a SPOF. If it fails, the entire website becomes unavailable.  
+Single Point of Failure (SPOF): The server is a SPOF. If any of its components fails, the entire website becomes unavailable.  
 No Security: No firewalls or HTTPS encryption are implemented, making the website vulnerable to attacks and insecure data transmission.  
 No Monitoring: No monitoring tools are in place to identify potential issues proactively.  
 
