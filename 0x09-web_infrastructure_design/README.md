@@ -1,7 +1,7 @@
 0x09. Web infrastructure design
 ===
 
-This document summarizes three web infrastructure designs for the website www.foobar.com, highlighting their components and potential issues, incorporating the clarifications you provided.
+This document summarizes four web infrastructure designs for the website www.foobar.com, highlighting their components and potential issues.
 
 Task 1: One-Server Web Infrastructure
 ===
