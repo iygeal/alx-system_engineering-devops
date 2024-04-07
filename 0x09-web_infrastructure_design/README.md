@@ -82,3 +82,18 @@ Additional Notes:
 These designs provide a basic understanding of web infrastructure concepts. Real-world deployments might involve additional components and configurations.  
 Security is paramount. Always implement firewalls, HTTPS, and intrusion detection/prevention systems for robust protection.  
 Monitoring is crucial for proactive problem identification and website health maintenance.  
+
+Task 4: Highly Scalable and Fault-Tolerant Web Infrastructure
+===
+This design prioritizes both scalability and fault tolerance for foobar.com.  
+
+Components:
+---
+
+User: Initiates web requests.  
+Internet: Connects users to the firewall.  
+3 Firewalls: Filter incoming and outgoing traffic on each server group (Load Balancers, Web/App Servers, Database).  
+2 Load Balancers (HAproxy) configured as a cluster: Distribute traffic across web and application servers in an active-active HA configuration.  
+Web Server Cluster: Contains multiple servers running Nginx (web server software). This allows for horizontal scaling to handle increased traffic.  
+Application Server Cluster: Contains multiple servers running your application code. Similar to the web server cluster, this enables horizontal scaling of application logic.  
+Database Cluster (MySQL): This can be configured for redundancy in several ways (Active/Passive Failover or Multi-Master Replication).  
