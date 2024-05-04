@@ -13,8 +13,5 @@ Host *
   IdentityFile ~/.ssh/school
   PasswordAuthentication no
 ",
-    owner   => 'ubuntu',
-    group   => 'ubuntu',
-    mode    => '0600',
   }
 }
