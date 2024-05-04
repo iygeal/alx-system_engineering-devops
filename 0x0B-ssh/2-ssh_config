@@ -1,0 +1,22 @@
+# Configure SSH client so that we connect without password
+
+# Specify the hosts to which this configuration applies
+Host *
+
+# Send the LANG and LC_* environment variables to the remote server
+SendEnv LANG LC_*
+
+# Hash the known hosts file for improved security
+HashKnownHosts yes
+
+# Enable GSSAPI authentication for single sign-on (SSO) and other advanced features
+GSSAPIAuthentication yes
+
+# Do not delegate GSSAPI credentials to the remote server
+GSSAPIDelegateCredentials no
+
+# Specify the private key file to use for authentication
+IdentityFile ~/.ssh/school
+
+# Refuse to authenticate using a password
+PasswordAuthentication no
