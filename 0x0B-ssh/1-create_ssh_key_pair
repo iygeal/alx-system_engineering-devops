@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Bash script that generates RSA key pay of 4096 bits
+# Protect with passphrase as betty
+ssh-keygen -t rsa -b 4096 -f school -P "betty"
