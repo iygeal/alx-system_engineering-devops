@@ -1,15 +1,17 @@
-# Puppet manifest to modify SSH configuration
+# Seting up my client config file
+# using puppet to make changes to the default ssh config file
+include stdlib
 
-class ssh_config {
-  file_line { 'Turn off passwd auth':
-    ensure  => present,
-    path    => '/home/ubuntu/.ssh/ssh_config',
-    line    => 'PasswordAuthentication no',
-  }
+file_line { 'Turn off passwd auth':
+  ensure  => present,
+  path    => '/etc/ssh/ssh_config',
+  line    => '    PasswordAuthentication no',
+  replace => true,
+}
 
-  file_line { 'Declare identity file':
-    ensure  => present,
-    path    => '/home/ubuntu/.ssh/ssh_config',
-    line    => 'IdentityFile ~/.ssh/school',
-  }
+file_line { 'Delare identity file':
+  ensure  => present,
+  path    => '/etc/ssh/ssh_config',
+  line    => '     IdentityFile ~/.ssh/school',
+  replace => true,
 }
