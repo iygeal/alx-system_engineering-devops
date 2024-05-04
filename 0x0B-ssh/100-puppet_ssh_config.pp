@@ -1,17 +1,18 @@
-# Seting up my client config file
-class ssh_config() {
-  # Puppet manifest to configure SSH client to connect without password
+Does this one below meet the requirement:
+# Modifying my SSH client config file
+# using puppet to make changes to the default ssh config file
+include stdlib
 
-  file { '/home/ubuntu/.ssh/config':
-    ensure  => present,
-    content => "
-Host *
-  SendEnv LANG LC_*
-  HashKnownHosts yes
-  GSSAPIAuthentication yes
-  GSSAPIDelegateCredentials no
-  IdentityFile ~/.ssh/school
-  PasswordAuthentication no
-",
-  }
+file_line { 'Turn off passwd auth':
+  ensure  => present,
+  path    => '/etc/ssh/ssh_config',
+  line    => '    PasswordAuthentication no',
+  replace => true,
+}
+
+file_line { 'Declare identity file':
+  ensure  => 'present',
+  path    => '/etc/ssh/ssh_config',
+  line    => '     IdentityFile ~/.ssh/school',
+  replace => true,
 }
