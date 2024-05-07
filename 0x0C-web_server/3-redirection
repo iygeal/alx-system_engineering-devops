@@ -1,27 +1,16 @@
 #!/usr/bin/env bash
-# Install and configure nginx web server with redirection
+# Script to configure Nginx server to redirect /redirect_me
 
-# Update package lists
+# Update package index and install Nginx
 sudo apt-get update
+sudo apt-get install -y nginx
 
-# Install Nginx
-sudo apt-get install nginx -y
+# Define the new site URL and the string for replacement
+new_site="www.youtube.com/@naturethrillers/videos"
+replacement="location /redirect_me {\n\treturn 301 https:\/\/$new_site;\n}"
 
-# Configure Nginx to listen on port 80
-sudo sed -i's/#listen 80;/listen 80;/g' /etc/nginx/sites-available/default
+# Use sed to replace the appropriate line in the Nginx configuration file
+sudo sed -i "/^\s*server\s*{[^}]*$/a $replacement" /etc/nginx/sites-available/default
 
-# Allow HTTP traffic through firewall (UFW)
-sudo ufw allow 'Nginx HTTP'
-
-# Create a simple HTML page
-echo "Hello World!" > /var/www/html/index.html
-
-# Append redirection configuration to the existing file
-sudo tee -a /etc/nginx/sites-available/default > /dev/null <<EOF
-location /redirect_me {
-    return 301 http://www.youtube.com/@naturethrillers/videos;
-}
-EOF
-
-# Restart Nginx to apply changes
+# Restart Nginx to apply the configuration changes
 sudo service nginx restart
