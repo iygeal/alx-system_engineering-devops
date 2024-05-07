@@ -14,7 +14,13 @@ nginx::resource::server { 'default':
   vhost_cfg_append => { 'rewrite' => '^/redirect_me https://www.youtube.com/@naturethrillers/videos permanent' },
 }
 
-file { '/var/www/html/index.nginx-debian.html':
+file { '/var/www/html/index.html':
   ensure  => present,
   content => 'Hello World!',
+}
+
+service { 'nginx':
+  ensure  => running,
+  enable  => true,
+  require => Package['nginx'],
 }
