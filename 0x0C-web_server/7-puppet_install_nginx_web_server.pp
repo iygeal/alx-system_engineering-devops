@@ -1,26 +1,29 @@
-# Install and configure nginx
+# Update the system
+exec { 'update system':
+  command => '/usr/bin/apt-get update',
+}
+
+# Install nginx package
 package { 'nginx':
-  ensure => installed,
+  ensure  => 'installed',
+  require => Exec['update system'],
 }
 
-class { 'nginx':
-  manage_repo    => true,
-  package_source => 'nginx-stable',
-}
-
-nginx::resource::server { 'default':
-  listen_port      => 80,
-  www_root         => '/var/www/html/',
-  vhost_cfg_append => { 'rewrite' => '^/redirect_me https://www.youtube.com/@naturethrillers/videos permanent' },
-}
-
+# Create index.html with "Hello World!" content
 file { '/var/www/html/index.html':
-  ensure  => present,
   content => 'Hello World!',
 }
 
+# Add a rewrite rule for the /redirect_me endpoint in the nginx configuration
+exec { 'redirect_me':
+  command  => 'sed -i "24i\	rewrite ^/redirect_me https://www.youtube.com/@naturethrillers/videos permanent;" /etc/nginx/sites-available/default',
+  provider => 'shell',
+  require  => Package['nginx'],
+}
+
+# Ensure nginx service is running
 service { 'nginx':
-  ensure  => running,
+  ensure  => 'running',
   enable  => true,
   require => Package['nginx'],
 }
