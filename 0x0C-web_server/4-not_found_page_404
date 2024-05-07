@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Configure NGINX to have custum 404 error message
+
+# Update package index and install Nginx
+sudo apt-get update
+sudo apt-get install -y nginx
+
+# Create a basic index.html page with "Hello World!" content
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Create the content for the custom 404 page
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+
+# Construct the configuration string for the custom 404 page and error redirect
+error_config="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+
+# Modify the Nginx configuration file to include the error_page and location directives for the 404.html file
+sudo sed -i "s/listen 80 default_server;/$error_config/" /etc/nginx/sites-enabled/default
+
+# Configure a redirect for error 404 to the YouTube site
+redirect_config="server_name _;\n\terror_page 404 =301 https:\/\/www.youtube.com\/@naturethrillers\/videos;"
+
+# Modify the Nginx configuration file to include the redirect configuration
+sudo sed -i "s/server_name _;/$redirect_config/" /etc/nginx/sites-enabled/default
+
+# Restart the Nginx server to apply the changes
+sudo service nginx restart
