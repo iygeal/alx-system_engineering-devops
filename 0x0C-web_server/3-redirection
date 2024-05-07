@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Install and configure nginx web server with redirection
+
+# Update package lists
+sudo apt-get update
+
+# Install Nginx
+sudo apt-get install nginx -y
+
+# Configure Nginx to listen on port 80
+sudo sed -i's/#listen 80;/listen 80;/g' /etc/nginx/sites-available/default
+
+# Allow HTTP traffic through firewall (UFW)
+sudo ufw allow 'Nginx HTTP'
+
+# Create a simple HTML page
+echo "Hello World!" > /var/www/html/index.html
+
+# Append redirection configuration to the existing file
+sudo tee -a /etc/nginx/sites-available/default > /dev/null <<EOF
+location /redirect_me {
+    return 301 http://www.youtube.com/@naturethrillers/videos;
+}
+EOF
+
+# Restart Nginx to apply changes
+sudo service nginx restart
