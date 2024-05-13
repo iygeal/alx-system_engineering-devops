@@ -45,10 +45,10 @@ backend iygeal_backend
 "
 
 # Configure HAProxy
-echo "$haproxy_config" | sudo tee /etc/haproxy/haproxy.cfg >/dev/null
+echo "$haproxy_config" | sudo tee -a /etc/haproxy/haproxy.cfg
 
-# Enable HAProxy Management
-sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
+# Enable HAProxy to be started by init script
+echo "ENABLE=1" | sudo tee -a /etc/default/haproxy
 
 # Restart HAProxy
 sudo service haproxy restart
