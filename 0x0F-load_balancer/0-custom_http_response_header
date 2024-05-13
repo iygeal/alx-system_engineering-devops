@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Configure NGINX to include a custom header
+# and handle redirects for web-01 and web-02
+
+# Check if NGINX is already installed
+if ! command -v nginx &> /dev/null; then
+    # Update package index and install NGINX
+    sudo apt-get update -y -qq
+    sudo apt-get install -y nginx -qq
+fi
+
+# Configure firewall to allow requests through port 80
+sudo ufw allow 'Nginx HTTP'
+
+# Give the user ownership to website files for easy editing
+sudo mkdir -p /var/www/html /var/www/error
+sudo chown -R "$USER":"$USER" /var/www
+sudo chmod -R 755 /var/www
+
+# Create index page with "Hello World!" content
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Create webpage for error 404
+echo "Ceci n'est pas une page" | sudo tee /var/www/error/error_404.html
+
+# Configure NGINX server block
+server_config="server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+    add_header X-Served-By \$hostname;
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+    if (\$request_filename ~ redirect_me){
+        rewrite ^ https://www.youtube.com/@naturethrillers/videos permanent;
+    }
+    error_page 404 /error_404.html;
+    location = /error_404.html {
+        internal;
+    }
+}"
+
+# Apply NGINX server block configuration
+echo "$server_config" | sudo tee /etc/nginx/sites-enabled/default >/dev/null
+
+# Restart NGINX to apply the changes
+sudo service nginx restart
