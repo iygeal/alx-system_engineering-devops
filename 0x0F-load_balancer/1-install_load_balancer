@@ -13,9 +13,8 @@ if ! command -v haproxy &> /dev/null; then
     sudo apt-get install -y haproxy -qq
 fi
 
-# Configure HAProxy
-sudo tee /etc/haproxy/haproxy.cfg >/dev/null <<EOF
-global
+# HAProxy configuration
+haproxy_config="global
     log /dev/log    local0
     log /dev/log    local1 notice
     chroot /var/lib/haproxy
@@ -43,7 +42,10 @@ backend iygeal_backend
     balance roundrobin
     server 517769-web-01 $WEB_01_IP:80 check
     server 517769-web-02 $WEB_02_IP:80 check
-EOF
+"
+
+# Configure HAProxy
+echo "$haproxy_config" | sudo tee /etc/haproxy/haproxy.cfg >/dev/null
 
 # Enable HAProxy Management
 sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
