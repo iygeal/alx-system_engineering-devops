@@ -20,7 +20,7 @@ backend iygeal_backend_servers
 "
 echo "$HAProxy_config" | sudo tee -a /etc/haproxy/haproxy.cfg
 
-# enable HAproxy to be started by init script
+# enable HAproxy to be started by init script by appending ENABLED=1 to haproxy
 
 echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
 
