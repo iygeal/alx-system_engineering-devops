@@ -24,7 +24,7 @@ global
     daemon
 
 defaults
-    log global
+    log     global
     mode    http
     option  httplog
     option  dontlognull
@@ -32,15 +32,15 @@ defaults
     timeout client  50000
     timeout server  50000
 
-frontend http_front
+frontend iygeal_frontend
     bind *:80
     stats uri /haproxy?stats
     default_backend iygeal_backend_servers
 
 backend iygeal_backend_servers
     balance roundrobin
-    server web-01 $WEB_01_IP:80 check
-    server web-02 $WEB_02_IP:80 check
+    server 517769-web-01 $WEB_01_IP:80 check
+    server 517769-web-02 $WEB_02_IP:80 check
 EOF
 
 # Enable HAProxy Management
