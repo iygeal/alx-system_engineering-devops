@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 # This script installs and configures HAProxy
-# to distrubte traffic to two web servers - web-01 and web-02
+# to distribute traffic to two web servers - web-01 and web-02
 # using roundrobin algorithm
 
 # Variables for web server IPs
 WEB_01_IP="100.26.216.116"
 WEB_02_IP="3.84.161.102"
 
-# Install HAProxy
-sudo apt-get update -y -qq
-sudo apt-get install -y haproxy -qq
+# Install HAProxy if not already installed
+if ! command -v haproxy &> /dev/null; then
+    sudo apt-get update -y -qq
+    sudo apt-get install -y haproxy -qq
+fi
 
 # Configure HAProxy
 sudo tee /etc/haproxy/haproxy.cfg >/dev/null <<EOF
