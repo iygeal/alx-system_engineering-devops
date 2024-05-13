@@ -1,20 +1,22 @@
-# 2-puppet_custom_http_response_header.pp
+# Download and install Nginx web server
+# and add a custom HTTP header
 
-# Ensure nginx is installed
-package { 'nginx':
-  ensure => installed,
+exec { 'update system':
+  command => '/usr/bin/apt-get update',
 }
 
-# Allow traffic through port 80
-firewall { 'Nginx HTTP':
-  dport  => 80,
-  proto  => 'tcp',
-  action => 'accept',
+package { 'nginx':
+  ensure  => 'installed',
+  require => Exec['update system'],
+}
+
+file { '/var/www/html/index.html':
+  content => 'Hello World!',
 }
 
 # Define nginx server block configuration
-file { '/etc/nginx/sites-enabled/default':
-  ensure  => file,
+file { '/etc/nginx/sites-available/default':
+  ensure  => present,
   content => "
 server {
     listen 80 default_server;
@@ -36,7 +38,11 @@ server {
 }",
 }
 
-# Restart nginx service
+exec { 'reload nginx':
+  command => 'service nginx reload',
+  require => File['/etc/nginx/sites-available/default'],
+}
+
 service { 'nginx':
   ensure  => running,
   enable  => true,
