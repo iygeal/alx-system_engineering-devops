@@ -4,24 +4,25 @@
 # using roundrobin algorithm
 
 sudo apt-get -y update
-apt-get -y install haproxy
+sudo apt-get -y install haproxy
 
-# edit config file
+# Edit HAProxy configuration file
 HAProxy_config=\
 "
-frontend  iygeal_backend
+frontend  iygeal_frontend
         bind *:80
         mode http
-        default_backend iygeal_backend
-backend iygeal_backend
+        default_backend iygeal_backend_servers
+backend iygeal_backend_servers
         balance roundrobin
-        server 63210-web-01 100.26.216.116:80 check
-        server 63210-web-02 3.84.161.102:80 check
+        server 517769-web-01 100.26.216.116:80 check
+        server 517769-web-02 3.84.161.102:80 check
 "
 echo "$HAProxy_config" | sudo tee -a /etc/haproxy/haproxy.cfg
 
-# enable haproxy to be started by init script
+# enable HAproxy to be started by init script
 
 echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
 
+# Restart HAproxy after configuration
 sudo service haproxy restart
