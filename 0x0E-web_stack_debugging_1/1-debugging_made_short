@@ -5,4 +5,6 @@
 # with a copy of the contents of /sites-available/default.
 # The ln -s creates a symbolic link, -f flag deletes the existing file and replaces it
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-sudo service nginx restart
+service nginx restart
+# Kill the first nginx PID
+kill "$(pgrep 'nginx' | head -l)"
