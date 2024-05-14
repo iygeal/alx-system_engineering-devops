@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script illustrates a command to use to configure Nginx so
+# that it listens to port 80
+# The command deletes the existing content of /sites-enabled/default and replaces it
+# with a copy of the contents of /sites-available/default.
+# The ln -s creates a symbolic link, -f flag deletes the existing file and replaces it
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
