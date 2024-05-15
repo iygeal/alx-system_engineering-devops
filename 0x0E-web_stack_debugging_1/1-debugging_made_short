@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Configure nginx to listen on port 80 and only port80; then stop running nginx
+# Configure nginx to listen on port 80 and only port80; stop running nginx
 sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
 service nginx restart
 kill "$(pgrep 'nginx' | head -l)"
