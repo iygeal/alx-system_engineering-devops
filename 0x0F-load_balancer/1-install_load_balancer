@@ -3,26 +3,49 @@
 # to distribute traffic to two web servers - web-01 and web-02
 # using roundrobin algorithm
 
-sudo apt-get -y update
-sudo apt-get -y install haproxy
+# Install HAProxy if not already installed
+if ! command -v haproxy &>/dev/null; then
+    sudo apt update
+    sudo apt install -y haproxy
+fi
 
 # Edit HAProxy configuration file
 HAProxy_config=\
 "
-frontend  iygeal_frontend
-        bind *:80
-        mode http
-        default_backend iygeal_backend_servers
-backend iygeal_backend_servers
-        balance roundrobin
-        server 517769-web-01 100.26.216.116:80 check
-        server 517769-web-02 3.84.161.102:80 check
+global
+	log /dev/log    local0
+	log /dev/log    local1 notice
+	chroot /var/lib/haproxy
+	stats socket /run/haproxy/admin.sock mode 660 level admin
+	stats timeout 30s
+	user haproxy
+	group haproxy
+	daemon
+
+defaults
+	log     global
+	mode    http
+	option  httplog
+	option  dontlognull
+	timeout connect 5000
+	timeout client  50000
+	timeout server  50000
+
+frontend my_frontend
+    bind *:80
+    mode http
+    default_backend my_backend
+
+backend my_backend
+    mode http
+    balance roundrobin
+    server 517769-web-01 100.26.216.116:80 check
+    server 517769-web-02 3.84.161.102:80 check
 "
-echo "$HAProxy_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+echo "$HAProxy_config" | sudo tee /etc/haproxy/haproxy.cfg
 
-# enable HAproxy to be started by init script by appending ENABLED=1 to haproxy
-
+# Enable HAProxy to be started by init script by appending ENABLED=1 to haproxy
 echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
 
-# Restart HAproxy after configuration
+# Restart HAProxy after configuration
 sudo service haproxy restart

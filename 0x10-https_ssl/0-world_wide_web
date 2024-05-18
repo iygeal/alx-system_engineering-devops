@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# write a Bash script that will display information about the subdomains
+
+# Function to fetch and display DNS record information for a given subdomain
+dns_config () {
+    # Run the dig command to get DNS information for the subdomain.domain
+    # Grep the output to get the ANSWER SECTION and the following line
+    # Translate tabs to newlines for easier parsing
+    # Use tail to get the last two lines (record type and IP address)
+    # Translate newlines to spaces to form a single line of output
+    script=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
+
+    # Print the formatted output using awk
+    # The output format is: "The subdomain SUBDOMAIN is a RECORD_TYPE record and points to IP_ADDRESS"
+    echo "$2 $script" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
+}
+
+# Main script logic
+# Check if the script was called with one argument (the domain)
+if [ "$#" == 1 ]
+then
+  # If only the domain is provided, call dns_config for each default subdomain
+  dns_config "$1" "www"
+  dns_config "$1" "lb-01"
+  dns_config "$1" "web-01"
+  dns_config "$1" "web-02"
+# Check if the script was called with two arguments (the domain and subdomain)
+elif [ "$#" == 2 ]
+then
+  # If both domain and subdomain are provided, call dns_config for the specified subdomain
+  dns_config "$1" "$2"
+fi
