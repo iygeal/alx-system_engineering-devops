@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Run nginx as a user named nginx
+sudo pkill -f apache2
+sudo chmod 644 /etc/nginx/nginx.conf
+sudo ln -fs /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo -u nginx service nginx start
