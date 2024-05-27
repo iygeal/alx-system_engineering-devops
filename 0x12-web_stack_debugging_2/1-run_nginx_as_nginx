@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Run nginx as a user named nginx
+
+# kill apache2 server already running
+#+ and listening on port 80
+sudo pkill -f apache2
+
+# Grant permissions to users of nginx.conf
+sudo chmod 644 /etc/nginx/nginx.conf
+
+# Create symlink of sites-available in sites-enabled
+sudo ln -fs /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+# Now run nginx as the user nginx
+sudo -u nginx service nginx start
