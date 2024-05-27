@@ -5,7 +5,7 @@
 #+ and listening on port 80
 sudo pkill -f apache2
 
-# Grant permissions to users of nginx.conf
+# Grant permissions to users of nginx.conf file
 sudo chmod 644 /etc/nginx/nginx.conf
 
 # Create symlink of sites-available in sites-enabled
