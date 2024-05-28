@@ -8,6 +8,9 @@ sudo pkill -f apache2
 # Grant permissions to users of nginx.conf file
 sudo chmod 644 /etc/nginx/nginx.conf
 
+# Update listening port in nginx config
+sudo sed -i 's/80/8080/g' /etc/nginx/sites-available/default
+
 # Create symlink of sites-available in sites-enabled
 sudo ln -fs /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
