@@ -16,11 +16,11 @@ if __name__ == "__main__":
     tasks = requests.get(todo_url).json()
 
     username = res.get("username")
-    task_status = "True" if tasks[0].get("completed") else "False"
-    task_title = tasks[0].get("title")
 
     with open(f"{user_id}.csv", "w") as f:
         for task in tasks:
+            task_status = "True" if task.get("completed") else "False"
+            task_title = task.get("title")
             f.write(
                 '"{}","{}","{}","{}"\n'.format(
                     user_id, username, task_status, task_title))
