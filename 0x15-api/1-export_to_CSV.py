@@ -21,5 +21,6 @@ if __name__ == "__main__":
 
     with open(f"{user_id}.csv", "w") as f:
         for task in tasks:
-            f.write(f"{user_id},{username},{employee_name},
-                    {task_status},{task_title}\n")
+            f.write('"{}","{}","{}","{}"\n'.format(
+                user_id, username, task_status, task_title
+            ))
