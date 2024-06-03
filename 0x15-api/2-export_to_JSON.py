@@ -20,7 +20,7 @@ if __name__ == "__main__":
     output_dict = {user_id: []}
 
     for task in tasks:
-        task_status = "True" if task.get("completed") else "False"
+        task_status = True if task.get("completed") else False
         task_title = task.get("title")
         task_dict = {
             "task": task_title,
