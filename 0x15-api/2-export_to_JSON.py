@@ -12,20 +12,22 @@ if __name__ == "__main__":
 
     res = requests.get(base_url).json()
     employee_name = res.get("name")
+    username = res.get("username")
 
     todo_url = f"{base_url}/todos"
     tasks = requests.get(todo_url).json()
 
-    username = res.get("username")
+    output_dict = {user_id: []}
+
+    for task in tasks:
+        task_status = "True" if task.get("completed") else "False"
+        task_title = task.get("title")
+        task_dict = {
+            "task": task_title,
+            "completed": task_status,
+            "username": username
+        }
+        output_dict[user_id].append(task_dict)
 
     with open(f"{user_id}.json", "w") as f:
-        for task in tasks:
-            task_list = [
-                {
-                    "task": task.get("title"),
-                    "completed": task.get("completed"),
-                    "username": username
-                }
-            ]
-            data = {user_id: task_list}
-            json.dump(data, f)
+        json.dump(output_dict, f)
