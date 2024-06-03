@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Python script that gets from an API and exports to CSV"""
 
-
 import requests
 from sys import argv
 
