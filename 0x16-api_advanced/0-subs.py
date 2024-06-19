@@ -6,17 +6,21 @@ from requests import get
 
 def number_of_subscribers(subreddit):
     """Returns the number of subreddit subscribers"""
-    if subreddit is None or not isinstance(subreddit, str):
+    url = f"https://www.reddit.com/r/{subreddit}/about.json"
+
+    if subreddit is None or type(subreddit) is not str:
         return 0
 
-    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
-    response = get(url)
-    if response.status_code != 200:
-        return 0
+    headers = {"User-Agent": "python:app_iygeal:1.0.0 (by /u/iygeal)"}
 
-    results = response.json()
     try:
-        return results.get("data").get("subscribers")
+        response = get(url, headers=headers, allow_redirects=False)
+        if response.status_code != 200:
+            return 0
+        else:
+            res_data = response.json()
+            subscribers = res_data["data"]["subscribers"]
+            return subscribers
 
     except Exception:
         return 0
