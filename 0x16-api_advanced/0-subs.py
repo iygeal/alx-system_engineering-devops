@@ -11,7 +11,7 @@ def number_of_subscribers(subreddit):
     if subreddit is None or type(subreddit) is not str:
         return 0
 
-    headers = {"User_Agent": "python:app_iygeal:1.0.0 (by /u/iygeal)"}
+    headers = {"User-Agent": "python:app_iygeal:1.0.0 (by /u/iygeal)"}
 
     try:
         response = get(url, headers=headers, allow_redirects=False)
