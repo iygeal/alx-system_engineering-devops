@@ -13,7 +13,7 @@ def number_of_subscribers(subreddit):
     headers = {"User-Agent": "python:app_iygeal:1.0.0 (by /u/iygeal)"}
 
     try:
-        response = requests.get(url, headers=headers, allow_redirects=False)
+        response = requests.get(url, headers=headers)
         if response.status_code != 200:
             return 0
         else:
