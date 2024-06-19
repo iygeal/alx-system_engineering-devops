@@ -1,20 +1,19 @@
 #!/usr/bin/python3
-""""Module that defines a function used to query Reddit API"""
+"""Module that defines a function used to query Reddit API"""
 
-from requests import get
+import requests
 
 
 def number_of_subscribers(subreddit):
     """Returns the number of subreddit subscribers"""
-    url = f"https://www.reddit.com/r/{subreddit}/about.json"
-
-    if subreddit is None or type(subreddit) is not str:
+    if not isinstance(subreddit, str) or subreddit.strip() == "":
         return 0
 
+    url = f"https://www.reddit.com/r/{subreddit}/about.json"
     headers = {"User-Agent": "python:app_iygeal:1.0.0 (by /u/iygeal)"}
 
     try:
-        response = get(url, headers=headers, allow_redirects=False)
+        response = requests.get(url, headers=headers, allow_redirects=False)
         if response.status_code != 200:
             return 0
         else:
@@ -22,5 +21,6 @@ def number_of_subscribers(subreddit):
             subscribers = data["data"]["subscribers"]
             return subscribers
 
-    except Exception:
+    except requests.RequestException as e:
+        print(f"Error fetching data for subreddit '{subreddit}': {e}")
         return 0
