@@ -1,13 +1,13 @@
-#This manifest increases the traffic NGINX server can handle
+# This manifest increases the traffic NGINX server can handle
 
 # Replace the ulimit value in /etc/default/nginx
-exec { 'nginx-fix':
-  command => 'sed -i "s/ULIMIT=\"-n [0-9]*\"/ULIMIT=\"-n 4096\"/" /etc/default/nginx',
-  path    => '/bin:/usr/bin',
+exec { 'nginx_ulimit_fix':
+  command => 'sed -i "s/15/4000/" /etc/default/nginx',
+  path    => ['/usr/local/bin', '/usr/bin', '/bin']
 }
 
 # Restart NGINX after changing ulimit value
-exec { 'nginx-restart':
-  command => 'service nginx reload',
-  path    => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
+exec { 'nginx_restart':
+  command => 'service nginx restart',
+  path    => ['/usr/sbin', '/usr/bin', '/sbin', '/bin']
 }
