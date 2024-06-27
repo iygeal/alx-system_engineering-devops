@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
-# This script gracefully reloads the Gunicorn service
-# Send the HUP signal to gracefully reload Gunicorn
-# Gunicorn interprets this signal as an instruction to reload.
+# This script gracefully reloads the Gunicorn service using hang up (HUP) signal
 pkill --signal HUP gunicorn
