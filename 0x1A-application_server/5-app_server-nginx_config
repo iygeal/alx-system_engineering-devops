@@ -1,0 +1,63 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+
+    add_header X-Served-By $hostname;
+
+    location /hbnb_static {
+        alias /data/web_static/current/;
+    }
+    # Attempt to serve AirBnB_clone_v4 on port 5003
+	location = / {
+		# First of all, attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files $uri $uri/ =404;
+		include proxy_params;
+		proxy_pass http://0.0.0.0:5003/2-hbnb;
+    }
+
+    if ($request_filename ~ redirect_me) {
+        rewrite ^ https://www.youtube.com/@naturethrillers/videos permanent;
+    }
+
+    error_page 404 /error_404.html;
+    location = /error_404.html {
+        internal;
+    }
+
+    # Proxy to the first Gunicorn instance on port 5000
+    location /airbnb-onepage {
+        proxy_pass http://0.0.0.0:5000/airbnb-onepage;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Proxy to the second Gunicorn instance on port 5001 using regex
+    location ~ ^/airbnb-dynamic/number_odd_or_even/([0-9]+)$ {
+        proxy_pass http://0.0.0.0:5001/number_odd_or_even/$1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Proxy to third Gunicorn instance on port 5002 for AirBnB_clone_v3 API
+    location /api/ {
+        proxy_pass http://0.0.0.0:5002/api/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Static files for proper rendering
+    location /static {
+        alias web_dynamic/static/;
+    }
+}
