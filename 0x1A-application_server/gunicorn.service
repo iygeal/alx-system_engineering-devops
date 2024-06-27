@@ -1,0 +1,27 @@
+# The Unit section describes the service and its dependencies
+[Unit]
+# A short description of the service
+Description=Gunicorn instance to serve AirBnB Clone Web Dynamic
+# Ensures that the service starts only after the network is available
+After=network.target
+
+# The Service section specifies how the service should run
+[Service]
+# The user under which the Gunicorn process will run
+User=ubuntu
+# The group under which the Gunicorn process will run
+Group=www-data
+# The directory from which Gunicorn will be executed
+WorkingDirectory=/home/ubuntu/AirBnB_clone_v4
+# The command to start the Gunicorn process with specified options
+ExecStart=/usr/bin/gunicorn --workers 3 --bind 0.0.0.0:5003 --access-logfile /tmp/airbnb-access.log --error-logfile /tmp/airbnb-error.log web_dynamic.2-hbnb:app
+# Always restart the service if it crashes
+Restart=always
+# The identifier for logging in syslog
+SyslogIdentifier=gunicorn
+
+# The Install section specifies how the service should be installed
+[Install]
+# Ensures that the service is started in the appropriate run level
+WantedBy=multi-user.target
+
