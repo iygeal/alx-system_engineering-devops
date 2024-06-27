@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # This script gracefully reloads the Gunicorn service
 
 # Send the HUP signal to gracefully reload Gunicorn
