@@ -45,7 +45,7 @@ server {
 
     # Proxy to third Gunicorn instance on port 5002 for AirBnB_clone_v3 API
     location /api/ {
-        proxy_pass http://0.0.0.0:5002/;
+        proxy_pass http://0.0.0.0:5002/api/;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
